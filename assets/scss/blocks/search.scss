@@ -1,0 +1,53 @@
+.search {
+
+}
+
+.hide {
+    display: none;
+}
+
+.city-list {
+    list-style-type: none;
+    max-height: 300px;
+    overflow: scroll;
+    &__item {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        border: 1px solid $c-dark;
+        padding: 10px;
+        align-items: center;
+    }
+}
+
+.rate {
+    &__wrapper {
+        margin-top: 50px;
+    }
+    &__head {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        border: 1px solid $c-dark;
+        padding: 10px;
+        align-items: center;
+    }
+    &__def {
+        display: flex;
+        flex-direction: column;
+    }
+    &__input {
+        max-width: 200px;
+    }
+    &-list {
+        display: none;
+        &__item {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            border: 1px solid $c-dark;
+            padding: 10px;
+            align-items: center;
+        }
+    }
+}
