@@ -20,7 +20,6 @@ class Search {
         };
         this.cityList = document.querySelector(`[data-${this.dataNames.cityList}]`);
         this.addedCities = [];
-
         this.input = document.querySelector(`[data-${this.dataNames.cityInput}]`);
         this.init();
     }
@@ -72,18 +71,25 @@ class Search {
                 let btn = event.target,
                     city = btn.previousElementSibling.innerText;
 
+                this.removeRareZones();
 
-
-                if (!this.addedCities.includes(city)) {
+                if (!this.addedCities.includes(city) || this.addedCities === []) {
                     this.addedCities.push(city);
                     this.removeRareZones();
                     this.addedCities.sort().forEach(el => {
-                        console.log(el);
                         this.renderRareZone(el);
-                        btn.innerText = 'Удалить'
                     });
-                    console.log(this.addedCities)
+                    btn.innerText = 'Удалить'
+
+                } else {
+                    this.addedCities = this.addedCities.filter(el =>  el !== city )
+                    this.addedCities.sort().forEach(el => {
+                        this.renderRareZone(el);
+                    });
+                    btn.innerText = 'Добавить'
                 }
+                console.log(this.addedCities)
+
 
 
 
@@ -125,8 +131,7 @@ class Search {
                                 <input type="text" class="nx-form-element rate__input" placeholder="320.00">
                                 <a href="#" class="btn btn_lt rate__btn">Добавить наценку</a>
                             </div>
-                        </div>`
-
+                        </div>`;
         this.zoneList.insertAdjacentHTML('beforeend', zoneHtml);
     }
 
