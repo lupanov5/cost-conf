@@ -23,7 +23,7 @@ $c-red: #de0c0f;
 // BACKGROUNDS
 //////////////////
 $bg: (
-    body: white,
+    body: $c-gray-dark,
     wrapper: transparent,
     container: transparent,
 );
@@ -156,7 +156,7 @@ $button: (
 // Forms
 //////////////////
 $input: (
-    height: 50px,
+    height: 30px,
     max-w: 100%,
     max-w-short: 280px,
     bg: white,
@@ -260,7 +260,7 @@ $container-gutter: 50px;
 $container-gutter-sm: 30px;
 $container-gutter-xs: 20px;
 $container: (
-    max-width: 1300px,
+    max-width: 900px,
     width-wo-gutter: 1200 - $container-gutter*2,
     min-width: 320px,
     width: 100%,
