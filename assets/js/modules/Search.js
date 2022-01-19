@@ -1,4 +1,5 @@
 'use strict';
+import ZoneItem from "./ZoneItem";
 
 /**
  * Поиск по тарифным зонам
@@ -6,7 +7,7 @@
 
 
 class Search {
-    constructor() {
+    constructor(arr) {
         this.dataNames = {
             search: 'search',
             cityList: 'city-list',
@@ -19,7 +20,7 @@ class Search {
             cityName: 'city-list__item'
         };
         this.cityList = document.querySelector(`[data-${this.dataNames.cityList}]`);
-        this.addedCities = [];
+        this.addedCities = arr;
         this.input = document.querySelector(`[data-${this.dataNames.cityInput}]`);
         this.init();
     }
@@ -31,14 +32,17 @@ class Search {
                 response.forEach((el) => {
                     this.renderCity(el.name, el.id)
                 });
-                this.addCity();
+                this.addBtn = document.querySelectorAll(`[data-${this.dataNames.addBtn}]`);
+                this.bindEvents();
             })
-        this.bindEvents();
+        this.removeRareZones()
     }
 
     bindEvents(){
         this.input.addEventListener('input', this.searchCity.bind(this))
-        this.removeRareZones()
+        this.addBtn.forEach(el => {
+            el.addEventListener('click', this.addCity.bind(this));
+        })
     }
 
     searchCity() {
@@ -59,49 +63,15 @@ class Search {
         }
     }
 
-    addCity() {
-        this.addBtn = document.querySelectorAll(`[data-${this.dataNames.addBtn}]`);
+    addCity(el) {
+        el.stopPropagation();
+        el.preventDefault();
 
-        this.addBtn.forEach(el => {
-            el.addEventListener('click', event => {
+        let btn = el.target,
+            name = btn.previousElementSibling.innerText,
+            id = btn.parentNode.getAttribute('id');
 
-                event.stopPropagation();
-                event.preventDefault();
-
-                let btn = event.target,
-                    city = btn.previousElementSibling.innerText;
-
-                this.removeRareZones();
-
-                if (!this.addedCities.includes(city) || this.addedCities === []) {
-                    this.addedCities.push(city);
-                    this.removeRareZones();
-                    this.addedCities.sort().forEach(el => {
-                        this.renderRareZone(el);
-                    });
-                    btn.innerText = 'Удалить'
-
-                } else {
-                    this.addedCities = this.addedCities.filter(el =>  el !== city )
-                    this.addedCities.sort().forEach(el => {
-                        this.renderRareZone(el);
-                    });
-                    btn.innerText = 'Добавить'
-                }
-                console.log(this.addedCities)
-
-
-
-
-                /*if (this.addedCities.includes(city)) {
-                    this.renderRareZone(city);
-                    btn.innerText = 'Удалить'
-                } else {
-                    this.removeRareZone(city)
-                    btn.innerText = 'Добавить'
-                }*/
-            })
-        })
+        this.updateCityList(name, id, btn);
     }
 
     async requestToServer(url) {
@@ -135,12 +105,32 @@ class Search {
         this.zoneList.insertAdjacentHTML('beforeend', zoneHtml);
     }
 
+    updateCityList(name, id, btn) {
+        if (btn.innerText === 'Добавить') {
+            this.addedCities.push({name, id});
+            this.addedCities.sort(this.sortArray);
+            new ZoneItem(this.addedCities);
+            btn.innerText = 'Удалить';
+        } else {
+            this.addedCities = this.addedCities.filter(n => n.id !== id);
+            this.addedCities.sort(this.sortArray);
+            new ZoneItem(this.addedCities);
+            btn.innerText = 'Добавить';
+        }
+    }
+
     removeRareZones() {
         this.zoneList = document.querySelector(`[data-${this.dataNames.zone}]`);
         this.zoneList.childNodes.forEach(el => {
             this.zoneList.removeChild(el);
         })
 
+    }
+
+    sortArray(x, y) {
+        if (x.name < y.name) {return -1;}
+        if (x.name > y.name) {return 1;}
+        return 0;
     }
 }
 
