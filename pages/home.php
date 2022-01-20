@@ -9,5 +9,6 @@
     </div>
 
     <div data-zone class="rate__wrapper"></div>
+    <div data-submit class="save-btn btn btn_lt">Сохранить изменения</div>
 
 </section>

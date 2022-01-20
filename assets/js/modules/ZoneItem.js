@@ -1,5 +1,4 @@
 'use strict';
-import {updateCityList} from "./Search";
 import Markup from "./Markup";
 /**
  * Элемент тарифной зоны
@@ -38,6 +37,7 @@ class ZoneItem {
         this.addMarkupBtn.forEach(el => {
             el.addEventListener('click', this.addMarkup.bind(this))
         });
+        this.checkNumInputs('input[name="base_charge_value"]');
     }
 
     addMarkup(el) {
@@ -47,19 +47,21 @@ class ZoneItem {
         new Markup(markZone);
     }
 
-    renderRareZone(zoneName) {
+    renderRareZone(zoneName, zoneId) {
 
-        let zoneHtml = `<div data-markup class="rate__def">
+        let zoneHtml = `<form name="${zoneId}" data-markup class="rate__def">
                             <div class="rate__head">
                                 <h5 class="rate__title">${zoneName}</h5>
                                 <a href="#" data-remove-btn class="btn btn_lt rate__btn">Удалить</a>
                             </div>
                             <div  class="rate__head">
                                 <span class="rate__title">Базовая стоимость доставки:</span>
-                                <input type="text" class="nx-form-element rate__input" placeholder="320.00">
+                                <div class="rate__input_field">
+                                    <input type="text" name="base_charge_value" class="nx-form-element rate__input" placeholder="320.00">
+                                </div>
                                 <a href="#" data-add-markup class="btn btn_lt rate__btn">Добавить наценку</a>
                             </div>
-                        </div>`;
+                        </form>`;
         this.zoneList.insertAdjacentHTML('beforeend', zoneHtml);
     }
 
@@ -72,12 +74,16 @@ class ZoneItem {
     removeThisZone(el) {
         el.stopPropagation();
         el.preventDefault();
+        el.target.parentNode.parentNode.remove();
+    }
 
-        let target = el.target,
-            name = target.previousElementSibling.innerText,
-            id = this.cityArr.find(city => city.name === name).id,
-            btn = document.getElementById(id).childNodes[3];
-        this.cityArr = this.cityArr.filter(n => n.id !== id);
+    checkNumInputs (selector) {
+        let numInputs = document.querySelectorAll(selector);
+        numInputs.forEach(item => {
+            item.addEventListener('input', () => {
+                item.value = item.value.replace(/[^-+.\d]/g, "");
+            });
+        });
     }
 }
 

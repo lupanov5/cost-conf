@@ -40,6 +40,11 @@
         max-width: 100px;
         margin-right: 20px;
         margin-left: 20px;
+        &_field {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
     }
     &-list {
         &__block {
@@ -59,4 +64,13 @@
             }
         }
     }
+}
+
+.save-btn {
+    margin-top: 20px;
+}
+
+.status {
+    font-size: 10px;
+    color: red;
 }

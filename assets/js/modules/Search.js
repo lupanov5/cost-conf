@@ -90,7 +90,7 @@ class Search {
         this.cityList.insertAdjacentHTML('beforeend', cityHtml);
     }
 
-    renderRareZone(zoneName) {
+    /*renderRareZone(zoneName) {
         let zoneHtml = `<div class="rate__def">
                             <div class="rate__head">
                                 <h5 class="rate__title">${zoneName}</h5>
@@ -103,7 +103,7 @@ class Search {
                             </div>
                         </div>`;
         this.zoneList.insertAdjacentHTML('beforeend', zoneHtml);
-    }
+    }*/
 
     updateCityList(name, id, btn) {
         if (btn.innerText === 'Добавить') {
