@@ -37,7 +37,7 @@ class ZoneItem {
         this.addMarkupBtn.forEach(el => {
             el.addEventListener('click', this.addMarkup.bind(this))
         });
-        this.checkNumInputs('input[name="base_charge_value"]');
+        //this.checkNumInputs('input[name="base_charge_value"]');
     }
 
     addMarkup(el) {
@@ -49,7 +49,7 @@ class ZoneItem {
 
     renderRareZone(zoneName, zoneId) {
 
-        let zoneHtml = `<form name="${zoneId}" data-markup class="rate__def">
+        let zoneHtml = `<div data-name="${zoneId}" data-markup class="rate__def">
                             <div class="rate__head">
                                 <h5 class="rate__title">${zoneName}</h5>
                                 <a href="#" data-remove-btn class="btn btn_lt rate__btn">Удалить</a>
@@ -57,11 +57,11 @@ class ZoneItem {
                             <div  class="rate__head">
                                 <span class="rate__title">Базовая стоимость доставки:</span>
                                 <div class="rate__input_field">
-                                    <input type="text" name="base_charge_value" class="nx-form-element rate__input" placeholder="320.00">
+                                    <input type="number" min="0" step="0.01" placeholder="0,00" name="base_charge_value" class="nx-form-element rate__input">
                                 </div>
                                 <a href="#" data-add-markup class="btn btn_lt rate__btn">Добавить наценку</a>
                             </div>
-                        </form>`;
+                        </div>`;
         this.zoneList.insertAdjacentHTML('beforeend', zoneHtml);
     }
 

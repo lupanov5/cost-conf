@@ -8,7 +8,7 @@
         <ul class="city-list" data-city-list></ul>
     </div>
 
-    <div data-zone class="rate__wrapper"></div>
+    <form data-zone class="rate__wrapper"></form>
     <div data-submit class="save-btn btn btn_lt">Сохранить изменения</div>
 
 </section>

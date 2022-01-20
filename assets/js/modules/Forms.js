@@ -18,7 +18,8 @@ class Forms {
             zone: 'zone'
         };
         this.path = 'server.php'
-        this.forms =  document.querySelectorAll('form');
+        this.zones =  document.querySelectorAll('[data-markup]');
+        this.form = document.querySelector('form');
         this.zoneList = document.querySelector(`[data-${this.dataNames.zone}]`);
         this.allData = [];
         this.init();
@@ -29,12 +30,11 @@ class Forms {
     }
 
     bindEvents() {
-        this.forms.forEach(el => {
-            this.validationForms(el);
-        })
+        this.validationForms(this.form);
 
 
-        console.log(this.allData)
+
+        //console.log(this.allData)
 
         /*this.postData(this.path, this.allData)
             .then(res => {
@@ -59,41 +59,49 @@ class Forms {
 
         if (notValid === inputs.length) {
             this.createStatusMessage(form, this.message.notData);
+            setTimeout(this.clearStatusMessages,5000);
             return;
         }
 
         if (!baseValue.value) {
-            this.createStatusMessage(baseValue, this.message.baseValue)
+            this.createStatusMessage(baseValue, this.message.baseValue);
+            setTimeout(this.clearStatusMessages,5000);
         }
 
         minWeight.forEach(el => {
             if (!el.value) {
-                this.createStatusMessage(el, this.message.weight)
+                this.createStatusMessage(el, this.message.weight);
+                setTimeout(this.clearStatusMessages,5000);
             }
         })
 
         maxWeight.forEach(el => {
             if (!el.value) {
-                this.createStatusMessage(el, this.message.weight)
+                this.createStatusMessage(el, this.message.weight);
+                setTimeout(this.clearStatusMessages,5000);
             }
         })
 
         charge.forEach(el => {
             if (!el.value) {
-                this.createStatusMessage(el, this.message.charge)
+                this.createStatusMessage(el, this.message.charge);
+                setTimeout(this.clearStatusMessages,5000);
             }
         })
         if (notValid === 0) {
-            this.saveForm(form);
+            this.zones.forEach(el => {
+                this.saveZone(el);
+            })
+            console.log(JSON.stringify(this.allData));
             this.clearInputs(form);
             this.clearStatusMessages();
 
         }
     }
 
-    saveForm(el) {
+    saveZone(el) {
         let form = el,
-            id = form.getAttribute('name'),
+            id = form.getAttribute('data-name'),
             base_charge_value = form.querySelector('[name="base_charge_value"]').value,
             min_weight = [],
             max_weight = [],
