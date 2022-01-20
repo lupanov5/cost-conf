@@ -8,8 +8,6 @@
         <ul class="city-list" data-city-list></ul>
     </div>
 
-    <div data-zone class="rate__wrapper">
-        <div data-markup class="rate__def"></div>
-    </div>
+    <div data-zone class="rate__wrapper"></div>
 
 </section>

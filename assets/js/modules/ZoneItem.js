@@ -1,5 +1,5 @@
 'use strict';
-import Search from "./Search";
+import {updateCityList} from "./Search";
 import Markup from "./Markup";
 /**
  * Элемент тарифной зоны
@@ -78,9 +78,6 @@ class ZoneItem {
             id = this.cityArr.find(city => city.name === name).id,
             btn = document.getElementById(id).childNodes[3];
         this.cityArr = this.cityArr.filter(n => n.id !== id);
-        let newCity = new Search(this.cityArr);
-        newCity.updateCityList(name, id, btn);
-        new Search(this.cityArr);
     }
 }
 

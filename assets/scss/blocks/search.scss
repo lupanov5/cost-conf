@@ -9,7 +9,7 @@
 .city-list {
     list-style-type: none;
     max-height: 300px;
-    overflow: scroll;
+    overflow: overlay;
     &__item {
         display: flex;
         flex-wrap: nowrap;
@@ -37,14 +37,15 @@
         flex-direction: column;
     }
     &__input {
-        max-width: 200px;
+        max-width: 100px;
+        margin-right: 20px;
+        margin-left: 20px;
     }
     &-list {
         &__block {
             display: flex;
-            :nth-of-type(2) {
-                flex-direction: column;
-            }
+            align-items: center;
+
         }
         &__item {
             display: flex;
@@ -53,6 +54,9 @@
             border: 1px solid $c-dark;
             padding: 10px;
             align-items: center;
+            :nth-child(2) {
+                flex-direction: column;
+            }
         }
     }
 }
