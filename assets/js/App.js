@@ -1,13 +1,12 @@
 import Search from './modules/Search';
 import Markup from "./modules/Markup";
 import Forms from "./modules/Forms";
-import ZoneItem from "./modules/ZoneItem";
+import RareArea from "./modules/RareArea";
 
 
 class App {
     constructor() {
         this.state = [];
-        this.cities = [];
         this.dataNames = {
             search: 'search',
             cityList: 'city-list',
@@ -30,10 +29,7 @@ class App {
         this.requestToServer('/rate-areas.json')
             .then(response => {
                 this.cityNameArr = response;
-                response.forEach((el) => {
-                    this.cities.push(el);
-                });
-                new Search(this.cities);
+                new Search(this.cityNameArr);
                 this.bindEvents();
             })
     }
@@ -50,7 +46,6 @@ class App {
             el.addEventListener('click', this.addZone.bind(this));
         })
     }
-
 
     // Метод делает запрос на сервер
     async requestToServer(url) {
@@ -77,12 +72,12 @@ class App {
         if (btn.innerText === 'Добавить') {
             this.state.push({name, rate_area_id});
             this.state.sort(this.sortArray);
-            new ZoneItem(this.state);
+            new RareArea(this.state);
             btn.innerText = 'Удалить';
         } else {
             this.state = this.state.filter(n => n.rate_area_id !== rate_area_id);
             this.state.sort(this.sortArray);
-            new ZoneItem(this.state);
+            new RareArea(this.state);
             btn.innerText = 'Добавить';
         }
     }
@@ -94,9 +89,11 @@ class App {
 
         if (el.target.hasAttribute(`data-${this.dataNames.removeBtn}`)) {
             let btn = el.target,
-                rate_area_id = btn.closest('[data-name]').getAttribute('data-name');
+                rate_area_id = btn.closest('[data-name]').getAttribute('data-name'),
+                city = document.getElementById(rate_area_id);
             this.state = this.state.filter(n => n.rate_area_id !== rate_area_id);
-            new ZoneItem(this.state);
+            new RareArea(this.state);
+            city.lastElementChild.innerText = 'Добавить';
         }
     }
 
@@ -139,13 +136,13 @@ class App {
                 }
                 return el;
             })
-            new ZoneItem(this.state);
+            new RareArea(this.state);
         }
     }
 
     // Метод проверяет и выводит в консоль данные
     sendData() {
-        new Forms(this.state)
+        new Forms(this.state);
     }
 
     // Метод сортирует массив объектов по алфавиту

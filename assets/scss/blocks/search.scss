@@ -1,5 +1,4 @@
 .search {
-
 }
 
 .hide {
@@ -23,6 +22,7 @@
 .rate {
     &__wrapper {
         margin-top: 50px;
+
     }
     &__head {
         display: flex;
@@ -47,15 +47,14 @@
         }
     }
     &-list {
+        list-style-type: none;
         &__block {
             display: flex;
             align-items: center;
+            justify-content: space-between;
 
         }
         &__item {
-            display: flex;
-            flex-wrap: nowrap;
-            justify-content: space-between;
             border: 1px solid $c-dark;
             padding: 10px;
             align-items: center;
@@ -67,10 +66,13 @@
 }
 
 .save-btn {
-    margin-top: 20px;
+    margin: 20px auto;
+    display: block;
+    max-width: 240px;
 }
 
 .status {
-    font-size: 10px;
+    font-size: 15px;
     color: red;
+    text-align: center;
 }

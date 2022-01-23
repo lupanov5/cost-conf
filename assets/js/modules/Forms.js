@@ -12,15 +12,17 @@ export default class Forms {
             baseValue: 'Укажите базовую стоимость',
             weight: 'Укажите вес',
             charge: 'Укажите наценку',
-            weightRanges: 'Диапазоны веса перекрываются'
+            overlap: 'Диапазоны веса перекрываются'
         };
         this.state = state;
         this.dataNames = {
             zone: 'zone',
-            name: 'name'
+            name: 'name',
+            markup: 'markup'
         };
         this.cityList =  document.querySelectorAll(`[data-${this.dataNames.name}]`);
         this.zoneList = document.querySelector(`[data-${this.dataNames.zone}]`);
+        this.markupList = document.querySelector(`[data-${this.dataNames.markup}]`);
         this.allData = [];
         this.init();
     }
@@ -58,11 +60,36 @@ export default class Forms {
         this.checkInputs(baseValue, this.message.baseValue);
         this.checkInputs(minWeight, this.message.weight);
         this.checkInputs(maxWeight, this.message.weight);
-        this.checkInputs(charge, this.message.charge)
+        this.checkInputs(charge, this.message.charge);
 
         if (notValid === 0) {
+            this.checkOverlap(this.cityList);
+
+        }
+    }
+
+    // Метод проверяет веса на перекрытие
+    checkOverlap(data) {
+        let notValid = 0;
+        data.forEach(el => {
+            let min_weight = [],
+                max_weight = [];
+            el.querySelectorAll('[name="min_weight"]').forEach(el => {
+                min_weight.push(el.value);
+            })
+            el.querySelectorAll('[name="max_weight"]').forEach(el => {
+                max_weight.push(el.value);
+            })
+            for (let i = 0; i < min_weight.length; i++) {
+                if (min_weight[i] < max_weight[i-1]) {
+                    this.createStatusMessage(el, this.message.overlap);
+                    notValid++;
+                }
+            }
+        });
+        if (notValid === 0) {
             this.getData(this.state, this.cityList);
-            this.clearInputs(form);
+            this.clearInputs(this.zoneList);
             this.clearStatusMessages();
         }
     }
@@ -93,11 +120,6 @@ export default class Forms {
                 }
                 extra_charges.push(obj)
             }
-            let zoneData = {
-                rate_area_id: rate_area_id,
-                base_charge_value: base_charge_value,
-                extra_charges: extra_charges
-            }
             state.map(item => {
                 if (item.rate_area_id === rate_area_id) {
                     delete item.extra_charges;
@@ -108,7 +130,7 @@ export default class Forms {
                 return item
             })
         })
-        console.log(JSON.stringify(state));
+        console.log(JSON.stringify(this.state));
     }
 
     // Метод очищает все инпуты
@@ -137,6 +159,9 @@ export default class Forms {
         }
         if (!el.parentNode.lastElementChild.classList.contains('status')) {
             el.parentNode.appendChild(statusMessage);
+        }
+        if (el.hasAttribute(`data-${this.dataNames.name}`)) {
+            el.appendChild(statusMessage);
         }
     }
 
